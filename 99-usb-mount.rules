@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEMS=="usb", KERNEL=="sd[a-z][0-9]", ENV{ID_FS_TYPE}!="", RUN+="/bin/systemctl start usb-mount@%k.service"
+ACTION=="remove", SUBSYSTEMS=="usb", KERNEL=="sd[a-z][0-9]", RUN+="/bin/systemctl start usb-umount@%k.service"

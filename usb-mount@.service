@@ -1,0 +1,8 @@
+[Unit]
+Description=Mount USB drive %i
+After=systemd-udevd.service
+RequiresMountsFor=/media
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/usb-mount.sh /dev/%i
