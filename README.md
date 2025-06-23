@@ -50,3 +50,5 @@ journalctl -t usb -n 20 --no-pager
 ## Tested
 
 Tested with Raspberry Pi OS.
+
+Inspired by [usbmount](https://github.com/rbrito/usbmount/blob/master/usbmount).
