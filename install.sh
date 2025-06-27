@@ -30,9 +30,9 @@ install -m 644 99-usb-mount.rules /etc/udev/rules.d/99-usb-mount.rules
 SHARED_GROUP="${SHARED_GROUP:-sharedmedia}"
 
 if ! getent group "$SHARED_GROUP" > /dev/null; then
-    logger -t usb "Group $SHARED_GROUP not found, creating..."
+    echo -t usb "Group $SHARED_GROUP not found, creating..."
     groupadd --system "$SHARED_GROUP"
-    logger -t usb "Group $SHARED_GROUP created"
+    echo -t usb "Group $SHARED_GROUP created"
 fi
 
 # Reload daemons
