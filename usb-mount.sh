@@ -5,6 +5,18 @@ DEVICE="$1"
 PART_NAME=$(basename "$DEVICE")
 MOUNTPOINT="/media/$PART_NAME"
 
+# Ensure shared group exists ---
+SHARED_GROUP="sharedmedia"
+
+if ! getent group "$SHARED_GROUP" > /dev/null; then
+    logger -t usb "Group $SHARED_GROUP not found, creating..."
+    groupadd --system "$SHARED_GROUP"
+    logger -t usb "Group $SHARED_GROUP created"
+fi
+
+SHARED_GID=$(getent group "$SHARED_GROUP" | cut -d: -f3)
+# ###########
+
 # Get partition type GUID (GPT)
 PART_TYPE=$(lsblk -no PARTTYPE "$DEVICE" 2>/dev/null || echo "")
 logger -t usb "Usb PART_TYPE: $PART_TYPE"
@@ -67,5 +79,16 @@ for skiplabel in "${SKIP_LABELS[@]}"; do
 done
 
 mkdir -p "$MOUNTPOINT"
-mount -o uid=1000,gid=1000,umask=0022 "$DEVICE" "$MOUNTPOINT"
+
+# Mount with group access
+mount -o uid=1000,gid="$SHARED_GID",umask=0002 "$DEVICE" "$MOUNTPOINT"
 logger -t usb "Mounted $DEVICE to $MOUNTPOINT"
+
+# Set group and permissions
+chgrp -R "$SHARED_GROUP" "$MOUNTPOINT"
+chmod -R 2775 "$MOUNTPOINT"
+logger -t usb "Set group ownership to $SHARED_GROUP and permissions on $MOUNTPOINT"
+
+# Add users to shared group for sharing the data
+sudo usermod -aG sharedmedia homelab
+sudo usermod -aG sharedmedia www-data
