@@ -4,7 +4,7 @@ set -e
 # Update and install required packages
 echo "Updating package lists and installing dependencies..."
 sudo apt update
-sudo apt install -y exfat-fuse exfat-utils ntfs-3g
+sudo apt install -y exfat-fuse exfatprogs ntfs-3g
 
 echo "Installing USB auto-mount..."
 
