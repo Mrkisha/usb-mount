@@ -4,18 +4,9 @@ set -e
 DEVICE="$1"
 PART_NAME=$(basename "$DEVICE")
 MOUNTPOINT="/media/$PART_NAME"
-
-# Ensure shared group exists ---
-SHARED_GROUP="sharedmedia"
-
-if ! getent group "$SHARED_GROUP" > /dev/null; then
-    logger -t usb "Group $SHARED_GROUP not found, creating..."
-    groupadd --system "$SHARED_GROUP"
-    logger -t usb "Group $SHARED_GROUP created"
-fi
+SHARED_GROUP="${SHARED_GROUP:-sharedmedia}"
 
 SHARED_GID=$(getent group "$SHARED_GROUP" | cut -d: -f3)
-# ###########
 
 # Get partition type GUID (GPT)
 PART_TYPE=$(lsblk -no PARTTYPE "$DEVICE" 2>/dev/null || echo "")

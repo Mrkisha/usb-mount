@@ -26,6 +26,15 @@ install -m 644 usb-umount@.service /etc/systemd/system/usb-umount@.service
 echo "Copying 99-usb-mount.rules to /etc/udev/rules.d/99-usb-mount.rules"
 install -m 644 99-usb-mount.rules /etc/udev/rules.d/99-usb-mount.rules
 
+# Ensure shared group exists ---
+SHARED_GROUP="${SHARED_GROUP:-sharedmedia}"
+
+if ! getent group "$SHARED_GROUP" > /dev/null; then
+    logger -t usb "Group $SHARED_GROUP not found, creating..."
+    groupadd --system "$SHARED_GROUP"
+    logger -t usb "Group $SHARED_GROUP created"
+fi
+
 # Reload daemons
 echo "Reloading systemd and udev rules..."
 systemctl daemon-reexec
