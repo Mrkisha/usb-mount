@@ -23,8 +23,8 @@ echo "Copying usb-umount@.service to /etc/systemd/system/"
 install -m 644 usb-umount@.service /etc/systemd/system/usb-umount@.service
 
 # Copy udev rules
-echo "Copying 99-test.rules to /etc/udev/rules.d/99-usb-mount.rules"
-install -m 644 99-test.rules /etc/udev/rules.d/99-usb-mount.rules
+echo "Copying 99-usb-mount.rules to /etc/udev/rules.d/99-usb-mount.rules"
+install -m 644 99-usb-mount.rules /etc/udev/rules.d/99-usb-mount.rules
 
 # Reload daemons
 echo "Reloading systemd and udev rules..."
