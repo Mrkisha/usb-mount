@@ -79,7 +79,3 @@ logger -t usb "Mounted $DEVICE to $MOUNTPOINT"
 chgrp -R "$SHARED_GROUP" "$MOUNTPOINT"
 chmod -R 2775 "$MOUNTPOINT"
 logger -t usb "Set group ownership to $SHARED_GROUP and permissions on $MOUNTPOINT"
-
-# Add users to shared group for sharing the data
-sudo usermod -aG sharedmedia homelab
-sudo usermod -aG sharedmedia www-data
