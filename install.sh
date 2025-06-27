@@ -33,12 +33,12 @@ if ! getent group "$SHARED_GROUP" > /dev/null; then
     echo -t usb "Group $SHARED_GROUP not found, creating..."
     groupadd --system "$SHARED_GROUP"
     echo -t usb "Group $SHARED_GROUP created"
-
-    sudo usermod -aG $SHARED_GROUP homelab
-    echo -e "\033[0;33mAdded user 'homelab' to group '$SHARED_GROUP'.\033[0m"
-    sudo usermod -aG $SHARED_GROUP www-data
-    echo -e "\033[0;33mAdded user 'www-data' to group '$SHARED_GROUP'.\033[0m"
 fi
+
+sudo usermod -aG $SHARED_GROUP homelab
+echo -e "\033[0;33mAdded user 'homelab' to group '$SHARED_GROUP'.\033[0m"
+sudo usermod -aG $SHARED_GROUP www-data
+echo -e "\033[0;33mAdded user 'www-data' to group '$SHARED_GROUP'.\033[0m"
 
 # Reload daemons
 echo "Reloading systemd and udev rules..."
