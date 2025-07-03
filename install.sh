@@ -37,6 +37,11 @@ fi
 
 sudo usermod -aG $SHARED_GROUP homelab
 echo -e "\033[0;33mAdded user 'homelab' to group '$SHARED_GROUP'.\033[0m"
+
+if ! getent passwd 82 > /dev/null; then
+  sudo useradd -u 82 www-data-nextcloud --system --no-create-home --shell /usr/sbin/nologin
+fi
+
 sudo usermod -aG $SHARED_GROUP 82
 echo -e "\033[0;33mAdded user '82' to group '$SHARED_GROUP'.\033[0m"
 
