@@ -37,8 +37,8 @@ fi
 
 sudo usermod -aG $SHARED_GROUP homelab
 echo -e "\033[0;33mAdded user 'homelab' to group '$SHARED_GROUP'.\033[0m"
-sudo usermod -aG $SHARED_GROUP www-data
-echo -e "\033[0;33mAdded user 'www-data' to group '$SHARED_GROUP'.\033[0m"
+sudo usermod -aG $SHARED_GROUP 82
+echo -e "\033[0;33mAdded user '82' to group '$SHARED_GROUP'.\033[0m"
 
 # Reload daemons
 echo "Reloading systemd and udev rules..."

@@ -72,10 +72,11 @@ done
 mkdir -p "$MOUNTPOINT"
 
 # Mount with group access
-mount -o uid=1000,gid="$SHARED_GID",umask=0002 "$DEVICE" "$MOUNTPOINT"
+mount -o uid=82,gid=82,fmask=0000,dmask=0000 "$DEVICE" "$MOUNTPOINT"
 logger -t usb "Mounted $DEVICE to $MOUNTPOINT"
 
 # Set group and permissions
-chgrp -R "$SHARED_GROUP" "$MOUNTPOINT"
-chmod -R 2775 "$MOUNTPOINT"
-logger -t usb "Set group ownership to $SHARED_GROUP and permissions on $MOUNTPOINT"
+chown -R 82:82 "$MOUNTPOINT"
+# chgrp -R "$SHARED_GROUP" "$MOUNTPOINT"
+# chmod -R 2775 "$MOUNTPOINT"
+# logger -t usb "Set group ownership to $SHARED_GROUP and permissions on $MOUNTPOINT"
