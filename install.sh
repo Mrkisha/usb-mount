@@ -35,8 +35,8 @@ if ! getent group "$SHARED_GROUP" > /dev/null; then
     echo -t usb "Group $SHARED_GROUP created"
 fi
 
-sudo usermod -aG $SHARED_GROUP homelab
-echo -e "\033[0;33mAdded user 'homelab' to group '$SHARED_GROUP'.\033[0m"
+sudo usermod -aG $SHARED_GROUP $USER
+echo -e "\033[0;33mAdded user '$USER' to group '$SHARED_GROUP'.\033[0m"
 
 if ! getent passwd 82 > /dev/null; then
   sudo useradd -u 82 www-data-nextcloud --system --no-create-home --shell /usr/sbin/nologin
