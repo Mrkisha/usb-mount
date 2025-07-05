@@ -72,7 +72,7 @@ done
 mkdir -p "$MOUNTPOINT"
 
 # Mount with group access
-mount -o uid=82,gid=82,fmask=0000,dmask=0000 "$DEVICE" "$MOUNTPOINT"
+mount -o uid=82,gid=82,fmask=0027,dmask=0027 "$DEVICE" "$MOUNTPOINT"
 logger -t usb "Mounted $DEVICE to $MOUNTPOINT"
 
 # Set group and permissions
