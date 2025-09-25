@@ -101,7 +101,7 @@ mkdir -p "$MOUNTPOINT"
 # ======
 
 # Mount with user and group access
-mount -o "uid=$MOUNT_UID,gid=$MOUNT_GID,fmask=0007,dmask=0007" "$DEVICE" "$MOUNTPOINT"
+mount -o "uid=$MOUNT_UID,gid=$MOUNT_GID,fmask=0117,dmask=0007" "$DEVICE" "$MOUNTPOINT"
 logger -t usb "Mounted $DEVICE to $MOUNTPOINT with uid=$MOUNT_UID, gid=$MOUNT_GID (user: $MOUNT_USER, group: $MOUNT_GROUP)"
 
 # Set ownership
