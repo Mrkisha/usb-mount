@@ -4,9 +4,29 @@ set -e
 DEVICE="$1"
 PART_NAME=$(basename "$DEVICE")
 MOUNTPOINT="/media/$PART_NAME"
-SHARED_GROUP="${SHARED_GROUP:-sharedmedia}"
 
-SHARED_GID=$(getent group "$SHARED_GROUP" | cut -d: -f3)
+# Use environment variables with defaults
+MOUNT_USER="${MOUNT_USER:-1000}"
+MOUNT_GROUP="${MOUNT_GROUP:-1000}"
+
+# Convert user/group names to IDs if needed
+if [[ "$MOUNT_USER" =~ ^[0-9]+$ ]]; then
+    MOUNT_UID="$MOUNT_USER"
+else
+    MOUNT_UID=$(id -u "$MOUNT_USER" 2>/dev/null) || {
+        echo "Error: User '$MOUNT_USER' not found"
+        exit 1
+    }
+fi
+
+if [[ "$MOUNT_GROUP" =~ ^[0-9]+$ ]]; then
+    MOUNT_GID="$MOUNT_GROUP"
+else
+    MOUNT_GID=$(getent group "$MOUNT_GROUP" | cut -d: -f3 2>/dev/null) || {
+        echo "Error: Group '$MOUNT_GROUP' not found"
+        exit 1
+    }
+fi
 
 # Get partition type GUID (GPT)
 PART_TYPE=$(lsblk -no PARTTYPE "$DEVICE" 2>/dev/null || echo "")
@@ -71,12 +91,24 @@ done
 
 mkdir -p "$MOUNTPOINT"
 
+# ======
 # Mount with group access
-mount -o uid=82,gid=82,fmask=0027,dmask=0027 "$DEVICE" "$MOUNTPOINT"
-logger -t usb "Mounted $DEVICE to $MOUNTPOINT"
+# mount -o uid=82,gid=82,fmask=0027,dmask=0027 "$DEVICE" "$MOUNTPOINT"
+# logger -t usb "Mounted $DEVICE to $MOUNTPOINT"
 
-# Set group and permissions
-chown -R 82:82 "$MOUNTPOINT"
+# # Set group and permissions
+# chown -R 82:82 "$MOUNTPOINT"
+# ======
+
+# Mount with user and group access
+mount -o "uid=$MOUNT_UID,gid=$MOUNT_GID,fmask=0007,dmask=0007" "$DEVICE" "$MOUNTPOINT"
+logger -t usb "Mounted $DEVICE to $MOUNTPOINT with uid=$MOUNT_UID, gid=$MOUNT_GID (user: $MOUNT_USER, group: $MOUNT_GROUP)"
+
+# Set ownership
+chown -R "$MOUNT_UID:$MOUNT_GID" "$MOUNTPOINT"
+logger -t usb "Set ownership to $MOUNT_USER:$MOUNT_GROUP ($MOUNT_UID:$MOUNT_GID) on $MOUNTPOINT"
+
+
 # chgrp -R "$SHARED_GROUP" "$MOUNTPOINT"
 # chmod -R 2775 "$MOUNTPOINT"
 # logger -t usb "Set group ownership to $SHARED_GROUP and permissions on $MOUNTPOINT"
