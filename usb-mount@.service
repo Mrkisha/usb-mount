@@ -5,4 +5,5 @@ RequiresMountsFor=/media
 
 [Service]
 Type=oneshot
+EnvironmentFile=/etc/usb-mount.env
 ExecStart=/usr/local/bin/usb-mount.sh /dev/%i

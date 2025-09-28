@@ -15,7 +15,7 @@ This project provides scripts and configuration to automatically mount and unmou
 Run the provided install script with root privileges:
 
 ```bash
-sudo ./install.sh
+sudo MOUNT_USER=<yourusername> MOUNT_GROUP=<yourgroupname> ./install.sh
 ```
 
 This will:

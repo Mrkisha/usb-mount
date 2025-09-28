@@ -19,6 +19,9 @@ rm -f /etc/systemd/system/usb-umount@.service
 echo "Removing /etc/udev/rules.d/99-usb-mount.rules"
 rm -f /etc/udev/rules.d/99-usb-mount.rules
 
+echo "Removing /etc/usb-mount.env"
+rm -f /etc/usb-mount.env
+
 # Reload daemons
 echo "Reloading systemd and udev rules..."
 systemctl daemon-reexec
