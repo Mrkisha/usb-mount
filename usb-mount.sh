@@ -9,6 +9,9 @@ MOUNTPOINT="/media/$PART_NAME"
 MOUNT_USER="${MOUNT_USER:-1000}"
 MOUNT_GROUP="${MOUNT_GROUP:-1000}"
 
+logger -t usb "Usb mounted user: $MOUNT_USER"
+logger -t usb "Usb mounted group: $MOUNT_GROUP"
+
 # Convert user/group names to IDs if needed
 if [[ "$MOUNT_USER" =~ ^[0-9]+$ ]]; then
     MOUNT_UID="$MOUNT_USER"
