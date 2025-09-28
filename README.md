@@ -16,6 +16,9 @@ Run the provided install script with root privileges:
 
 ```bash
 sudo MOUNT_USER=<yourusername> MOUNT_GROUP=<yourgroupname> ./install.sh
+
+# e.g. MOUNT_USER will be 1000 by default
+sudo MOUNT_GROUP=www-data-nextcloud ./install.sh
 ```
 
 This will:
