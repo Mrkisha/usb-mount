@@ -3,11 +3,14 @@ set -e
 
 DEVICE="$1"
 PART_NAME=$(basename "$DEVICE")
-MOUNTPOINT="/media/$PART_NAME"
 
 # Use environment variables with defaults
 MOUNT_USER="${MOUNT_USER:-1000}"
 MOUNT_GROUP="${MOUNT_GROUP:-1000}"
+
+MOUNTPOINT_ROOT="${MOUNTPOINT_ROOT:-/media}"
+MOUNTPOINT_ROOT_CHANGE_OWNERSHIP="${MOUNTPOINT_ROOT_CHANGE_OWNERSHIP:-false}"
+MOUNTPOINT="$MOUNTPOINT_ROOT/$PART_NAME"
 
 logger -t usb "Usb mounted user: $MOUNT_USER"
 logger -t usb "Usb mounted group: $MOUNT_GROUP"
@@ -111,6 +114,10 @@ logger -t usb "Mounted $DEVICE to $MOUNTPOINT with uid=$MOUNT_UID, gid=$MOUNT_GI
 chown -R "$MOUNT_UID:$MOUNT_GID" "$MOUNTPOINT"
 logger -t usb "Set ownership to $MOUNT_USER:$MOUNT_GROUP ($MOUNT_UID:$MOUNT_GID) on $MOUNTPOINT"
 
+if [ "$MOUNTPOINT_ROOT_CHANGE_OWNERSHIP" = "true" ]; then
+    chown -R "$MOUNT_UID:$MOUNT_GID" "$MOUNTPOINT_ROOT"
+    logger -t usb "Set ownership to $MOUNT_USER:$MOUNT_GROUP ($MOUNT_UID:$MOUNT_GID) on $MOUNTPOINT_ROOT"
+fi
 
 # chgrp -R "$SHARED_GROUP" "$MOUNTPOINT"
 # chmod -R 2775 "$MOUNTPOINT"
