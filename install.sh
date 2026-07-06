@@ -29,6 +29,11 @@ sudo install -m 644 usb-umount@.service /etc/systemd/system/usb-umount@.service
 echo "Copying 99-usb-mount.rules to /etc/udev/rules.d/99-usb-mount.rules"
 sudo install -m 644 99-usb-mount.rules /etc/udev/rules.d/99-usb-mount.rules
 
+# Create hook directories. Consumers (e.g. the homelab stack) drop executable
+# scripts here to react to drive add/remove events.
+echo "Creating hook directories under /etc/usb-mount/"
+sudo mkdir -p /etc/usb-mount/post-mount.d /etc/usb-mount/pre-umount.d
+
 # Ensure shared group exists ---
 # SHARED_GROUP="${SHARED_GROUP:-sharedmedia}"
 
